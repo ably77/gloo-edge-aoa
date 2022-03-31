@@ -78,9 +78,9 @@ echo
 echo "run the commands below to access argocd dashboard at argocd.example.com and gloo-portal demo at portal.example.com"
 echo 
 echo "cat <<EOF | sudo tee -a /etc/hosts"
-echo "$(kubectl -n gloo-system get service gateway-proxy -o jsonpath='{.status.loadBalancer.ingress[0].ip}') argocd.example.com"
-echo "$(kubectl -n gloo-system get service gateway-proxy -o jsonpath='{.status.loadBalancer.ingress[0].ip}') portal.example.com"
-echo "$(kubectl -n gloo-system get service gateway-proxy -o jsonpath='{.status.loadBalancer.ingress[0].ip}') api.example.com"
+echo "$(kubectl -n gloo-system get service gateway-proxy -o jsonpath='{.status.loadBalancer.ingress[0].*}') argocd.example.com"
+echo "$(kubectl -n gloo-system get service gateway-proxy -o jsonpath='{.status.loadBalancer.ingress[0].*}') portal.example.com"
+echo "$(kubectl -n gloo-system get service gateway-proxy -o jsonpath='{.status.loadBalancer.ingress[0].*}') api.example.com"
 echo "EOF"
 echo
 echo "access argocd at http://argocd.example.com/argo"
