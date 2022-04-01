@@ -22,6 +22,8 @@ spec:
             writeNamespace: gloo-system-ee
             watchNamespaces:
             - gloo-system-ee
+            - bookinfo-v1
+            - bookinfo-v2
         gloo-fed:
           enabled: false
           create_license_secret: false
