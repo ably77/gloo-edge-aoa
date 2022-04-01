@@ -13,7 +13,7 @@ spec:
     path: gloo-edge/base/ee/nofed/1-9-1/
   destination:
     server: https://kubernetes.default.svc
-    namespace: gloo-system
+    namespace: gloo-system-ee
   syncPolicy:
     automated:
       prune: true
