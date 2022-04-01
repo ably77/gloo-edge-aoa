@@ -18,6 +18,10 @@ spec:
         create_license_secret: false
         gloo:
           license_secret_name: license
+          settings: 
+            writeNamespace: gloo-system-ee
+            watchNamespaces:
+            - gloo-system-ee
         gloo-fed:
           enabled: false
           create_license_secret: false
