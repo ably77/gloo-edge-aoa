@@ -189,6 +189,104 @@ spec:
                                   type: string
                                   x-kubernetes-int-or-string: true
                               type: object
+                            dynamicForwardProxy:
+                              properties:
+                                dnsCacheConfig:
+                                  properties:
+                                    appleDns:
+                                      type: object
+                                    caresDns:
+                                      properties:
+                                        dnsResolverOptions:
+                                          properties:
+                                            noDefaultSearchDomain:
+                                              type: boolean
+                                            useTcpForDnsLookups:
+                                              type: boolean
+                                          type: object
+                                        resolvers:
+                                          items:
+                                            properties:
+                                              pipe:
+                                                properties:
+                                                  mode:
+                                                    format: int32
+                                                    type: integer
+                                                  path:
+                                                    type: string
+                                                type: object
+                                              socketAddress:
+                                                properties:
+                                                  address:
+                                                    type: string
+                                                  ipv4Compat:
+                                                    type: boolean
+                                                  namedPort:
+                                                    type: string
+                                                  portValue:
+                                                    format: int32
+                                                    type: integer
+                                                  protocol:
+                                                    type: string
+                                                    x-kubernetes-int-or-string: true
+                                                  resolverName:
+                                                    type: string
+                                                type: object
+                                            type: object
+                                          type: array
+                                      type: object
+                                    dnsCacheCircuitBreaker:
+                                      properties:
+                                        maxPendingRequests:
+                                          maximum: 4294967295
+                                          minimum: 0
+                                          nullable: true
+                                          type: integer
+                                      type: object
+                                    dnsFailureRefreshRate:
+                                      properties:
+                                        baseInterval:
+                                          type: string
+                                        maxInterval:
+                                          type: string
+                                      type: object
+                                    dnsLookupFamily:
+                                      type: string
+                                      x-kubernetes-int-or-string: true
+                                    dnsQueryTimeout:
+                                      type: string
+                                    dnsRefreshRate:
+                                      type: string
+                                    hostTtl:
+                                      type: string
+                                    maxHosts:
+                                      maximum: 4294967295
+                                      minimum: 0
+                                      nullable: true
+                                      type: integer
+                                    preresolveHostnames:
+                                      items:
+                                        properties:
+                                          address:
+                                            type: string
+                                          ipv4Compat:
+                                            type: boolean
+                                          namedPort:
+                                            type: string
+                                          portValue:
+                                            format: int32
+                                            type: integer
+                                          protocol:
+                                            type: string
+                                            x-kubernetes-int-or-string: true
+                                          resolverName:
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                saveUpstreamAddress:
+                                  type: boolean
+                              type: object
                             extauth:
                               properties:
                                 clearRouteCache:
@@ -360,6 +458,8 @@ spec:
                                   type: string
                                 drainTimeout:
                                   type: string
+                                enableTrailers:
+                                  type: boolean
                                 forwardClientCertDetails:
                                   type: string
                                   x-kubernetes-int-or-string: true
@@ -431,6 +531,8 @@ spec:
                                   type: boolean
                                 streamIdleTimeout:
                                   type: string
+                                stripAnyHostPort:
+                                  type: boolean
                                 tracing:
                                   properties:
                                     datadogConfig:
@@ -654,6 +756,27 @@ spec:
                               metadata:
                                 type: object
                                 x-kubernetes-preserve-unknown-fields: true
+                              metadataStatic:
+                                properties:
+                                  sources:
+                                    items:
+                                      properties:
+                                        observedGeneration:
+                                          format: int64
+                                          type: integer
+                                          x-kubernetes-int-or-string: true
+                                        resourceKind:
+                                          type: string
+                                        resourceRef:
+                                          properties:
+                                            name:
+                                              type: string
+                                            namespace:
+                                              type: string
+                                          type: object
+                                      type: object
+                                    type: array
+                                type: object
                               name:
                                 type: string
                               options:
@@ -2272,6 +2395,27 @@ spec:
                                     metadata:
                                       type: object
                                       x-kubernetes-preserve-unknown-fields: true
+                                    metadataStatic:
+                                      properties:
+                                        sources:
+                                          items:
+                                            properties:
+                                              observedGeneration:
+                                                format: int64
+                                                type: integer
+                                                x-kubernetes-int-or-string: true
+                                              resourceKind:
+                                                type: string
+                                              resourceRef:
+                                                properties:
+                                                  name:
+                                                    type: string
+                                                  namespace:
+                                                    type: string
+                                                type: object
+                                            type: object
+                                          type: array
+                                      type: object
                                     name:
                                       type: string
                                     options:
@@ -3745,6 +3889,13 @@ spec:
                                       properties:
                                         clusterHeader:
                                           type: string
+                                        dynamicForwardProxy:
+                                          properties:
+                                            autoHostRewriteHeader:
+                                              type: string
+                                            hostRewrite:
+                                              type: string
+                                          type: object
                                         multi:
                                           properties:
                                             destinations:
@@ -5206,6 +5357,104 @@ spec:
                                             type: string
                                             x-kubernetes-int-or-string: true
                                         type: object
+                                      dynamicForwardProxy:
+                                        properties:
+                                          dnsCacheConfig:
+                                            properties:
+                                              appleDns:
+                                                type: object
+                                              caresDns:
+                                                properties:
+                                                  dnsResolverOptions:
+                                                    properties:
+                                                      noDefaultSearchDomain:
+                                                        type: boolean
+                                                      useTcpForDnsLookups:
+                                                        type: boolean
+                                                    type: object
+                                                  resolvers:
+                                                    items:
+                                                      properties:
+                                                        pipe:
+                                                          properties:
+                                                            mode:
+                                                              format: int32
+                                                              type: integer
+                                                            path:
+                                                              type: string
+                                                          type: object
+                                                        socketAddress:
+                                                          properties:
+                                                            address:
+                                                              type: string
+                                                            ipv4Compat:
+                                                              type: boolean
+                                                            namedPort:
+                                                              type: string
+                                                            portValue:
+                                                              format: int32
+                                                              type: integer
+                                                            protocol:
+                                                              type: string
+                                                              x-kubernetes-int-or-string: true
+                                                            resolverName:
+                                                              type: string
+                                                          type: object
+                                                      type: object
+                                                    type: array
+                                                type: object
+                                              dnsCacheCircuitBreaker:
+                                                properties:
+                                                  maxPendingRequests:
+                                                    maximum: 4294967295
+                                                    minimum: 0
+                                                    nullable: true
+                                                    type: integer
+                                                type: object
+                                              dnsFailureRefreshRate:
+                                                properties:
+                                                  baseInterval:
+                                                    type: string
+                                                  maxInterval:
+                                                    type: string
+                                                type: object
+                                              dnsLookupFamily:
+                                                type: string
+                                                x-kubernetes-int-or-string: true
+                                              dnsQueryTimeout:
+                                                type: string
+                                              dnsRefreshRate:
+                                                type: string
+                                              hostTtl:
+                                                type: string
+                                              maxHosts:
+                                                maximum: 4294967295
+                                                minimum: 0
+                                                nullable: true
+                                                type: integer
+                                              preresolveHostnames:
+                                                items:
+                                                  properties:
+                                                    address:
+                                                      type: string
+                                                    ipv4Compat:
+                                                      type: boolean
+                                                    namedPort:
+                                                      type: string
+                                                    portValue:
+                                                      format: int32
+                                                      type: integer
+                                                    protocol:
+                                                      type: string
+                                                      x-kubernetes-int-or-string: true
+                                                    resolverName:
+                                                      type: string
+                                                  type: object
+                                                type: array
+                                            type: object
+                                          saveUpstreamAddress:
+                                            type: boolean
+                                        type: object
                                       extauth:
                                         properties:
                                           clearRouteCache:
@@ -5377,6 +5626,8 @@ spec:
                                             type: string
                                           drainTimeout:
                                             type: string
+                                          enableTrailers:
+                                            type: boolean
                                           forwardClientCertDetails:
                                             type: string
                                             x-kubernetes-int-or-string: true
@@ -5448,6 +5699,8 @@ spec:
                                             type: boolean
                                           streamIdleTimeout:
                                             type: string
+                                          stripAnyHostPort:
+                                            type: boolean
                                           tracing:
                                             properties:
                                               datadogConfig:
@@ -5671,6 +5924,27 @@ spec:
                                         metadata:
                                           type: object
                                           x-kubernetes-preserve-unknown-fields: true
+                                        metadataStatic:
+                                          properties:
+                                            sources:
+                                              items:
+                                                properties:
+                                                  observedGeneration:
+                                                    format: int64
+                                                    type: integer
+                                                    x-kubernetes-int-or-string: true
+                                                  resourceKind:
+                                                    type: string
+                                                  resourceRef:
+                                                    properties:
+                                                      name:
+                                                        type: string
+                                                      namespace:
+                                                        type: string
+                                                    type: object
+                                                type: object
+                                              type: array
+                                          type: object
                                         name:
                                           type: string
                                         options:
@@ -7289,6 +7563,27 @@ spec:
                                               metadata:
                                                 type: object
                                                 x-kubernetes-preserve-unknown-fields: true
+                                              metadataStatic:
+                                                properties:
+                                                  sources:
+                                                    items:
+                                                      properties:
+                                                        observedGeneration:
+                                                          format: int64
+                                                          type: integer
+                                                          x-kubernetes-int-or-string: true
+                                                        resourceKind:
+                                                          type: string
+                                                        resourceRef:
+                                                          properties:
+                                                            name:
+                                                              type: string
+                                                            namespace:
+                                                              type: string
+                                                          type: object
+                                                      type: object
+                                                    type: array
+                                                type: object
                                               name:
                                                 type: string
                                               options:
@@ -8762,6 +9057,13 @@ spec:
                                                 properties:
                                                   clusterHeader:
                                                     type: string
+                                                  dynamicForwardProxy:
+                                                    properties:
+                                                      autoHostRewriteHeader:
+                                                        type: string
+                                                      hostRewrite:
+                                                        type: string
+                                                    type: object
                                                   multi:
                                                     properties:
                                                       destinations:
@@ -10154,6 +10456,85 @@ spec:
                                         type: array
                                     type: object
                                 type: object
+                              sslConfigurations:
+                                items:
+                                  properties:
+                                    alpnProtocols:
+                                      items:
+                                        type: string
+                                      type: array
+                                    disableTlsSessionResumption:
+                                      nullable: true
+                                      type: boolean
+                                    oneWayTls:
+                                      nullable: true
+                                      type: boolean
+                                    parameters:
+                                      properties:
+                                        cipherSuites:
+                                          items:
+                                            type: string
+                                          type: array
+                                        ecdhCurves:
+                                          items:
+                                            type: string
+                                          type: array
+                                        maximumProtocolVersion:
+                                          type: string
+                                          x-kubernetes-int-or-string: true
+                                        minimumProtocolVersion:
+                                          type: string
+                                          x-kubernetes-int-or-string: true
+                                      type: object
+                                    sds:
+                                      properties:
+                                        callCredentials:
+                                          properties:
+                                            fileCredentialSource:
+                                              properties:
+                                                header:
+                                                  type: string
+                                                tokenFileName:
+                                                  type: string
+                                              type: object
+                                          type: object
+                                        certificatesSecretName:
+                                          type: string
+                                        clusterName:
+                                          type: string
+                                        targetUri:
+                                          type: string
+                                        validationContextName:
+                                          type: string
+                                      type: object
+                                    secretRef:
+                                      properties:
+                                        name:
+                                          type: string
+                                        namespace:
+                                          type: string
+                                      type: object
+                                    sniDomains:
+                                      items:
+                                        type: string
+                                      type: array
+                                    sslFiles:
+                                      properties:
+                                        rootCa:
+                                          type: string
+                                        tlsCert:
+                                          type: string
+                                        tlsKey:
+                                          type: string
+                                      type: object
+                                    transportSocketConnectTimeout:
+                                      type: string
+                                    verifySubjectAltName:
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                type: array
                               tcpListener:
                                 properties:
                                   options:
@@ -11567,6 +11948,27 @@ spec:
                     metadata:
                       type: object
                       x-kubernetes-preserve-unknown-fields: true
+                    metadataStatic:
+                      properties:
+                        sources:
+                          items:
+                            properties:
+                              observedGeneration:
+                                format: int64
+                                type: integer
+                                x-kubernetes-int-or-string: true
+                              resourceKind:
+                                type: string
+                              resourceRef:
+                                properties:
+                                  name:
+                                    type: string
+                                  namespace:
+                                    type: string
+                                type: object
+                            type: object
+                          type: array
+                      type: object
                     name:
                       type: string
                     options:
