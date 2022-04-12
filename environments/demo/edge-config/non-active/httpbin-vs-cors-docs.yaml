@@ -1,0 +1,34 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: httpbin-vs
+  namespace: gloo-system
+spec:
+  virtualHost:
+    options:
+      cors:
+        allowCredentials: true
+        allowHeaders:
+        - origin
+        allowMethods:
+        - GET
+        - POST
+        allowOrigin:
+        # The scheme portion of the URL is required
+        - 'https://solo.io'
+        allowOriginRegex:
+        - 'https://[a-zA-Z0-9]*.gloo.dev'
+        exposeHeaders:
+        - 'origin'
+        - 'x-envoy-upstream-service-time'
+        maxAge: 1d
+    domains:
+    - '*'
+    routes:
+    - matchers:
+      - prefix: /
+      routeAction:
+        single:
+          upstream:
+            name: httpbin-httpbin-8000
+            namespace: gloo-system
