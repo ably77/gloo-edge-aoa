@@ -1,0 +1,103 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: httpbin-vs
+  namespace: gloo-system
+spec:
+  virtualHost:
+    options:
+      cors:
+        allowCredentials: true
+        allowHeaders:
+        - '*'
+        - Accept
+        - limit
+        - radius
+        - Content-Type
+        - latitude
+        - longitude
+        - Authorization
+        - Origin
+        - senderid
+        - channelid
+        - applicationid
+        - locale
+        - liveAreaLists
+        - subsLiveAreaLists
+        - accountNumber
+        - PUID
+        - Accept-Encoding
+        - Accept-Language
+        - Connection
+        - Host
+        - Referer
+        - User-Agent
+        - activityid
+        - applicationuserid
+        - Authorization
+        - dealercode
+        - interactionid
+        - Okta_Access_Token
+        - Okta_Refresh_Token
+        - masterdealercode
+        - Refresh_Token
+        - sessionid
+        - senderid
+        - TIMESTAMP
+        - UserGroup
+        - workflowid
+        - limit
+        - radius
+        - storeid
+        - timezone
+        - userstoreid
+        - ajax
+        - x-xsrf-token
+        - PATCH
+        - application
+        - consumerType
+        - If-Modified-Since
+        - documentId
+        - CCD-Authorization
+        - user-id
+        - application-id
+        - timestamp
+        - userid
+        - usedocumentversion
+        - storeId
+        - x-auth-originator
+        - user-id
+        - operatorid
+        - x-requested-with
+        - activity-id
+        - X-Authorizations
+        - x-isp-eligibility-strategy
+        - X-Authorization
+        allowMethods:
+        - GET
+        - PUT
+        - POST
+        allowOrigin:
+        - www.t-mobile.com
+        - '*'
+        allowOriginRegex:
+        - '[a-zA-Z0-9\\-\\.]*.t-mobile.com'
+        exposeHeaders:
+        - '*'
+        - Okta_Access_Token
+        - Okta_Refresh_Token
+        - Date
+        - timezone
+        - userstoreid
+        - test-header
+        maxAge: 1d
+    domains:
+    - '*'
+    routes:
+    - matchers:
+      - prefix: /
+      routeAction:
+        single:
+          upstream:
+            name: httpbin-httpbin-8000
+            namespace: gloo-system
