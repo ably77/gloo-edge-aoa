@@ -1,0 +1,72 @@
+apiVersion: ratelimit.solo.io/v1alpha1
+kind: RateLimitConfig
+metadata:
+  name: route-limit-foo
+  namespace: gloo-system
+spec:
+  raw:
+    descriptors:
+    - key: generic_key
+      rateLimit:
+        requestsPerUnit: 10
+        unit: MINUTE
+      value: count
+    rateLimits:
+    - actions:
+      - genericKey:
+          descriptorValue: count
+---
+apiVersion: ratelimit.solo.io/v1alpha1
+kind: RateLimitConfig
+metadata:
+  name: route-limit-bar
+  namespace: gloo-system
+spec:
+  raw:
+    descriptors:
+    - key: generic_key
+      rateLimit:
+        requestsPerUnit: 5
+        unit: MINUTE
+      value: count
+    rateLimits:
+    - actions:
+      - genericKey:
+          descriptorValue: count
+---
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: httpbin-vs
+  namespace: gloo-system
+spec:
+  virtualHost:
+    domains:
+    - '*'
+    routes:
+    - matchers:
+      - prefix: /foo
+      options:
+        prefixRewrite: '/headers'
+        rateLimitConfigs:
+          refs:
+          - name: route-limit-foo
+            namespace: gloo-system
+      routeAction:
+        single:
+          upstream:
+            name: httpbin-httpbin-8000
+            namespace: gloo-system
+    - matchers:
+      - prefix: /bar
+      options:
+        prefixRewrite: '/'
+        rateLimitConfigs:
+          refs:
+          - name: route-limit-bar
+            namespace: gloo-system
+      routeAction:
+        single:
+          upstream:
+            name: httpbin-httpbin-8000
+            namespace: gloo-system
