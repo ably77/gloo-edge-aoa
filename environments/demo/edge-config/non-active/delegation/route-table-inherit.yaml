@@ -1,0 +1,15 @@
+apiVersion: gateway.solo.io/v1
+kind: RouteTable
+metadata:
+  name: 'httpbin-rt'
+  namespace: 'gloo-system'
+spec:
+  routes:
+    - matchers:
+       - prefix: '/foo'
+      inheritableMatchers: true
+      routeAction:
+        single:
+          upstream:
+            name: 'httpbin-httpbin-8000'
+            namespace: 'gloo-system'
