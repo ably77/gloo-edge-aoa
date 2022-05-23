@@ -26,6 +26,6 @@ spec:
     #    responseTransformation:
     #      transformationTemplate:
     #        body:
-    #          text: '{% if header(":status") == "405" %}<html><body style="background-color:powderblue;"><h1>This method is not allowed</body></html>{%
-    #            else %}{{ body() }}{% endif %}'
+    #          text: '{% if header(":status") == "405" %}201{% else %}{{ header(":status") }}{% endif %}'
     #        parseBodyBehavior: DontParse
+    
