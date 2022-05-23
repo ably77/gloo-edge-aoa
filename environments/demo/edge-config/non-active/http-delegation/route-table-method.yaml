@@ -9,7 +9,7 @@ spec:
        - prefix: '/foo'
          methods:
          - GET
-         - POST
+         #- POST
       routeAction:
         single:
           upstream:

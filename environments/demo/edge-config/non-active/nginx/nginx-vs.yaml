@@ -1,0 +1,31 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: nginx-vs
+  namespace: gloo-system
+spec:
+  virtualHost:
+    domains:
+    - '*'
+    routes:
+    - matchers:
+      - prefix: /foo
+        methods:
+         - GET
+         - POST
+      options:
+        prefixRewrite: '/'
+        autoHostRewrite: true
+      routeAction:
+        single:
+          upstream:
+            name: default-nginx-80
+            namespace: gloo-system
+    #options:
+    #  transformations:
+    #    responseTransformation:
+    #      transformationTemplate:
+    #        body:
+    #          text: '{% if header(":status") == "405" %}<html><body style="background-color:powderblue;"><h1>This method is not allowed</body></html>{%
+    #            else %}{{ body() }}{% endif %}'
+    #        parseBodyBehavior: DontParse
