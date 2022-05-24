@@ -61,6 +61,8 @@ spec:
                   text: '{{ request_header("accept-encoding") }}'
                 X-Device-Platform:
                   text: 'fooplatform'  
+                ":status":
+                  text: '{% if header(":status") == "405" %}201{% else if header(":status") == "429" %}529{% else %}{{ header(":status") }}{% endif %}'  
               body:
                 text: '{% if header(":status") == "429" %}{ "response_code": "529" }{% else if header(":status") == "405" %}{ "response_code": "201" }{% else %}{ "response_code": "201" }{% endif %}'
               parseBodyBehavior: DontParse
