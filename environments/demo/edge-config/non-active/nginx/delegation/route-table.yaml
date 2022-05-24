@@ -1,34 +1,13 @@
-apiVersion: ratelimit.solo.io/v1alpha1
-kind: RateLimitConfig
-metadata:
-  name: route-limit-foo
-  namespace: gloo-system
-spec:
-  raw:
-    descriptors:
-    - key: generic_key
-      rateLimit:
-        requestsPerUnit: 4
-        unit: MINUTE
-      value: count
-    rateLimits:
-    - actions:
-      - genericKey:
-          descriptorValue: count
----
 apiVersion: gateway.solo.io/v1
-kind: VirtualService
+kind: RouteTable
 metadata:
-  name: nginx-vs
-  namespace: gloo-system
+  name: 'nginx-rt'
+  namespace: 'gloo-system'
 spec:
-  virtualHost:
-    domains:
-    - '*'
-    routes:
+  routes:
     - matchers:
-      - prefix: /foo
-        methods:
+       - prefix: '/foo'
+         methods:
          - GET
          - POST
       options:
@@ -63,7 +42,7 @@ spec:
                   text: 'fooplatform'  
               body:
                 text: '{% if header(":status") == "429" %}{ "response_code": "529" }{% else if header(":status") == "405" %}{ "response_code": "201" }{% else %}{ "response_code": "201" }{% endif %}'
-              parseBodyBehavior: DontParse
+              parseBodyBehavior: DontParse   
       routeAction:
         single:
           upstream:
