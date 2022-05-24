@@ -1,0 +1,36 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: httpbin-vs
+  namespace: gloo-system
+spec:
+  virtualHost:
+    domains:
+    - '*'
+    routes:
+    - matchers:
+      - prefix: /foo
+      options:
+        prefixRewrite: '/'
+      delegateAction:
+          ref:
+            name: httpbin-rt
+            namespace: gloo-system
+---
+apiVersion: gateway.solo.io/v1
+kind: RouteTable
+metadata:
+  name: 'httpbin-rt'
+  namespace: 'gloo-system'
+spec:
+  routes:
+    - matchers:
+       - prefix: '/foo'
+         methods:
+         - GET
+         - POST
+      routeAction:
+        single:
+          upstream:
+            name: 'httpbin-httpbin-8000'
+            namespace: 'gloo-system'
