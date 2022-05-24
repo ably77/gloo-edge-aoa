@@ -30,7 +30,24 @@ spec:
       - prefix: /foo
         methods:
          - GET
-         #- POST
+         - POST
+      delegateAction:
+          ref:
+            name: nginx-rt
+            namespace: gloo-system
+---
+apiVersion: gateway.solo.io/v1
+kind: RouteTable
+metadata:
+  name: 'nginx-rt'
+  namespace: 'gloo-system'
+spec:
+  routes:
+    - matchers:
+       - prefix: '/foo'
+         methods:
+         - GET
+         - POST
       options:
         prefixRewrite: '/'
         autoHostRewrite: true
@@ -63,8 +80,9 @@ spec:
                   text: 'fooplatform'  
               body:
                 text: '{% if header(":status") == "429" %}{ "response_code": "529" }{% else if header(":status") == "405" %}{ "response_code": "201" }{% else %}{ "response_code": "201" }{% endif %}'
-              parseBodyBehavior: DontParse
-      delegateAction:
-          ref:
-            name: nginx-rt
+              parseBodyBehavior: DontParse   
+      routeAction:
+        single:
+          upstream:
+            name: default-nginx-80
             namespace: gloo-system
