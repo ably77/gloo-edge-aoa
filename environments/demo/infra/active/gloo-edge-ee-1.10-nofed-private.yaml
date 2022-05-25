@@ -25,6 +25,7 @@ spec:
             - bookinfo-v1
             - bookinfo-v2
             - httpbin
+            - default
           gatewayProxies:
             gatewayProxy:
               disabled: false # disable the default gateway-proxy deployment and its 2 default Gateway CRs

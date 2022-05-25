@@ -12,7 +12,7 @@ data:
 kind: Secret
 metadata:
   name: developer1-password
-  namespace: gloo-portal
+  namespace: gloo-system-public
 type: Opaque
 ---
 apiVersion: v1
@@ -199,6 +199,8 @@ spec:
         sniDomains:
         - '*.yourdomain.com'
       enabled: true
+    virtualServiceLabels:
+        gateway-type: public
   parameters:
     usagePlans:
       basic:
@@ -213,7 +215,7 @@ apiVersion: portal.gloo.solo.io/v1beta1
 kind: Group
 metadata:
   name: developers
-  namespace: gloo-portal
+  namespace: gloo-system-public
 spec:
   accessLevel:
     apis:
@@ -276,6 +278,9 @@ spec:
     secretRef:
       name: upstream-tls
       namespace: gloo-system
+  gatewayConfig:
+    labels:
+      gateway-type: public
 ---
 apiVersion: portal.gloo.solo.io/v1beta1
 kind: User
@@ -284,7 +289,7 @@ metadata:
     app.kubernetes.io/instance: petstore-swagger-apiproduct-1-0-2
     groups.portal.gloo.solo.io/gloo-portal.developers: "true"
   name: developer1
-  namespace: gloo-portal
+  namespace: gloo-system-public
 spec:
   accessLevel:
     portals:
