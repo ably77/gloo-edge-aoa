@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gloo-edge-enterprise-helm
+  name: gloo-edge-enterprise-helm-public
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: gloo-system-private
+    namespace: gloo-system-public
     server: https://kubernetes.default.svc
   project: default
   source:
@@ -19,9 +19,9 @@ spec:
         gloo:
           license_secret_name: license
           settings: 
-            writeNamespace: gloo-system-private
+            writeNamespace: gloo-system-public
             watchNamespaces:
-            - gloo-system-private
+            - gloo-system-public
             - bookinfo-v1
             - bookinfo-v2
         gloo-fed:

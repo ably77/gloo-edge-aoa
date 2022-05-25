@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gloo-portal-helm
+  name: gloo-edge-enterprise-helm-private
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -11,24 +11,29 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    chart: gloo-portal
+    chart: gloo-ee
     helm:
+      skipCrds: false
       values: |
-        singleNamespace: true
-        glooEdge:
-          enabled: true
-        istio:
+        create_license_secret: false
+        gloo:
+          license_secret_name: license
+          settings: 
+            writeNamespace: gloo-system-private
+            watchNamespaces:
+            - gloo-system-private
+            - bookinfo-v1
+            - bookinfo-v2
+        gloo-fed:
           enabled: false
-        glooMesh:
-          enabled: false
-        licenseKey: 
-          secretRef:
-            name: license
-            namespace: gloo-system-private
-            key: license-key
-    repoURL: https://storage.googleapis.com/dev-portal-helm
-    targetRevision: 1.2.2
+          create_license_secret: false
+          glooFedApiserver:
+            enable: false
+    repoURL: http://storage.googleapis.com/gloo-ee-helm
+    targetRevision: 1.10.12
   syncPolicy:
     automated:
       prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
       selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).
+    syncOptions:
+      - CreateNamespace=true

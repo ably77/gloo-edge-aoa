@@ -32,6 +32,7 @@ fi
 
 # license stuff
 kubectl create ns gloo-system-private
+kubectl create ns gloo-system-public
 
 kubectl apply -f - <<EOF
 apiVersion: v1
@@ -44,6 +45,20 @@ metadata:
     gloo: license
   name: license
   namespace: gloo-system-private
+type: Opaque
+EOF
+
+kubectl apply -f - <<EOF
+apiVersion: v1
+data:
+  license-key: ${BASE64_LICENSE_KEY}
+kind: Secret
+metadata:
+  labels:
+    app: gloo
+    gloo: license
+  name: license
+  namespace: gloo-system-public
 type: Opaque
 EOF
 
