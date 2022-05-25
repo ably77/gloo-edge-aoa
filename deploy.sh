@@ -62,17 +62,17 @@ metadata:
 type: Opaque
 EOF
 
-# install argocd 
-cd bootstrap-argocd
-./install-argocd.sh insecure-rootpath
-cd ..
-
-# wait for argo cluster rollout
-./tools/wait-for-rollout.sh deployment argocd-server argocd 10
+## install argocd 
+#cd bootstrap-argocd
+#./install-argocd.sh insecure-rootpath
+#cd ..
+#
+## wait for argo cluster rollout
+#./tools/wait-for-rollout.sh deployment argocd-server argocd 10
 
 # deploy edge demo
 kubectl apply -f platform-owners/demo/demo-cluster-config.yaml 
-kubectl apply -f platform-owners/demo/demo-apps.yaml 
+#kubectl apply -f platform-owners/demo/demo-apps.yaml 
 kubectl apply -f platform-owners/demo/demo-infra.yaml 
 kubectl apply -f platform-owners/demo/demo-edge-config.yaml 
 
@@ -82,8 +82,8 @@ kubectl apply -f platform-owners/demo/demo-edge-config.yaml
 ./tools/wait-for-rollout.sh deployment gloo-portal-controller gloo-system-private 5
 ./tools/wait-for-rollout.sh deployment gloo-portal-admin-server gloo-system-private 5
 # wait for bookinfo deployment
-./tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v1 10
-./tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v2 10
+#./tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v1 10
+#./tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v2 10
 
 # echo proxy url
 echo 

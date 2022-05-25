@@ -4,7 +4,7 @@ binaryData:
 kind: ConfigMap
 metadata:
   name: default-petstore-portal-faq
-  namespace: default
+  namespace: gloo-system-public
 ---
 apiVersion: v1
 data:
@@ -12,13 +12,14 @@ data:
 kind: Secret
 metadata:
   name: developer1-password
-  namespace: gloo-portal
+  namespace: gloo-system-public
 type: Opaque
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: petstore-v1
+  namespace: default
 spec:
   ports:
   - name: http
@@ -33,6 +34,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: petstore-v2
+  namespace: default
 spec:
   ports:
   - name: http
@@ -47,6 +49,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: petstore-v1
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -71,6 +74,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: petstore-v2
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -95,7 +99,7 @@ apiVersion: portal.gloo.solo.io/v1beta1
 kind: APIDoc
 metadata:
   name: petstore-openapi-v1-pets
-  namespace: default
+  namespace: gloo-system-public
 spec:
   openApi:
     content:
@@ -105,7 +109,7 @@ apiVersion: portal.gloo.solo.io/v1beta1
 kind: APIDoc
 metadata:
   name: petstore-openapi-v1-users
-  namespace: default
+  namespace: gloo-system-public
 spec:
   openApi:
     content:
@@ -115,7 +119,7 @@ apiVersion: portal.gloo.solo.io/v1beta1
 kind: APIDoc
 metadata:
   name: petstore-openapi-v2-full
-  namespace: default
+  namespace: gloo-system-public
 spec:
   openApi:
     content:
@@ -127,7 +131,7 @@ metadata:
   labels:
     app: petstore
   name: petstore-product
-  namespace: default
+  namespace: gloo-system-public
 spec:
   displayInfo:
     description: Fabulous API product for the Petstore
@@ -136,36 +140,36 @@ spec:
   - apis:
     - apiDoc:
         name: petstore-openapi-v1-pets
-        namespace: default
+        namespace: gloo-system-public
     - apiDoc:
         name: petstore-openapi-v1-users
-        namespace: default
+        namespace: gloo-system-public
     gatewayConfig:
       route:
         inlineRoute:
           backends:
           - upstream:
               name: default-petstore-v1-8080
-              namespace: gloo-system
+              namespace: gloo-system-public
     name: v1
   - apis:
     - apiDoc:
         name: petstore-openapi-v2-full
-        namespace: default
+        namespace: gloo-system-public
     gatewayConfig:
       route:
         inlineRoute:
           backends:
           - upstream:
               name: default-petstore-v2-8080
-              namespace: gloo-system
+              namespace: gloo-system-public
     name: v2
 ---
 apiVersion: portal.gloo.solo.io/v1beta1
 kind: Environment
 metadata:
   name: dev
-  namespace: default
+  namespace: gloo-system-public
 spec:
   apiProducts:
   - basePath: '{%version%}'
@@ -195,7 +199,7 @@ spec:
       config:
         secretRef:
           name: cf-upstream-tls
-          namespace: gloo-system
+          namespace: gloo-system-public
         sniDomains:
         - '*.kapoozi.com'
       enabled: true
@@ -215,7 +219,7 @@ apiVersion: portal.gloo.solo.io/v1beta1
 kind: Group
 metadata:
   name: developers
-  namespace: gloo-portal
+  namespace: gloo-system-public
 spec:
   accessLevel:
     apis:
@@ -234,7 +238,7 @@ spec:
       - basic
     portals:
     - name: ecommerce-portal
-      namespace: default
+      namespace: gloo-system-public
   displayName: ecommerce developers
   userSelector:
     matchLabels:
@@ -246,7 +250,7 @@ apiVersion: portal.gloo.solo.io/v1beta1
 kind: Portal
 metadata:
   name: ecommerce-portal
-  namespace: default
+  namespace: gloo-system-public
 spec:
   allApisPublicViewable: false
   banner:
@@ -262,22 +266,22 @@ spec:
     fetchUrl: https://i.imgur.com/hjgPMNP.png
   publishedEnvironments:
   - name: dev
-    namespace: default
+    namespace: gloo-system-public
   staticPages:
   - content:
       configMap:
         key: faq
         name: default-petstore-portal-faq
-        namespace: default
+        namespace: gloo-system-public
     description: Frequently Asked Questions
     displayOnHomepage: true
-    name: faq
+    name: faq-public
     navigationLinkName: FAQ
     path: /faq
   tls:
     secretRef:
       name: cf-upstream-tls
-      namespace: gloo-system
+      namespace: gloo-system-public
   gatewayConfig:
     labels:
       gateway-type: public
@@ -289,14 +293,14 @@ metadata:
     app.kubernetes.io/instance: petstore-swagger-apiproduct-1-0-2
     groups.portal.gloo.solo.io/gloo-portal.developers: "true"
   name: developer1
-  namespace: gloo-portal
+  namespace: gloo-system-public
 spec:
   accessLevel:
     portals:
     - name: ecommerce-portal
-      namespace: default
+      namespace: gloo-system-public
   basicAuth:
     passwordSecretKey: password
     passwordSecretName: developer1-password
-    passwordSecretNamespace: gloo-portal
+    passwordSecretNamespace: gloo-system-public
   username: developer1
