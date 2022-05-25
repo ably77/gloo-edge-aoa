@@ -32,7 +32,7 @@ else
 fi
 
 # license stuff
-kubectl create ns gloo-system
+kubectl create ns gloo-system-ee
 
 kubectl apply -f - <<EOF
 apiVersion: v1
@@ -44,7 +44,7 @@ metadata:
     app: gloo
     gloo: license
   name: license
-  namespace: gloo-system
+  namespace: gloo-system-ee
 type: Opaque
 EOF
 
