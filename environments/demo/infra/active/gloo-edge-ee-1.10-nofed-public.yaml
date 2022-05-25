@@ -24,6 +24,18 @@ spec:
             - gloo-system-public
             - bookinfo-v1
             - bookinfo-v2
+          gatewayProxies:
+            gatewayProxy:
+              disabled: false # disable the default gateway-proxy deployment and its 2 default Gateway CRs
+              gatewaySettings:
+                customHttpGateway: # using the default HTTP Gateway
+                  virtualServiceSelector:
+                    gateway-type: public # label set on the VirtualService
+                customHttpsGateway: # using the default HTTPS Gateway
+                  virtualServiceSelector:
+                    gateway-type: public # label set on the VirtualService
+                disableHttpGateway: false # disable the default HTTP Gateway    
+                disableHttpsGateway: false # disable the default HTTPS Gateway
         gloo-fed:
           enabled: false
           create_license_secret: false
