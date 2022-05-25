@@ -1,0 +1,302 @@
+apiVersion: v1
+binaryData:
+  faq: UTogSXMgdGhpcyBhIHN0YXRpYyBwYWdlIGZlYXR1cmUgZGVsaXZlcmVkIGJ5IGdsb28tcG9ydGFsPwpBOiBZZXMgaXQgaXMhIFNlZSB0aGlzICoqW3R1dG9yaWFsXShodHRwczovL2RvY3Muc29sby5pby9nbG9vLXBvcnRhbC9sYXRlc3QvZ3VpZGVzL2dldHRpbmdfc3RhcnRlZC9wYXJ0XzMvKSoqIGZvciBtb3JlIGluZm9ybWF0aW9uIA==
+kind: ConfigMap
+metadata:
+  name: default-petstore-portal-faq
+  namespace: default
+---
+apiVersion: v1
+data:
+  password: JDJhJDEwJFYySllBdm9jd1EvOUhHZk44eTlQdU9uWVEvRDIvb1VDbkw1TUtLNkNFTzBEUWJ1WXZNRUhP
+kind: Secret
+metadata:
+  name: developer1-password
+  namespace: default
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petstore-v1
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: petstore
+    version: v1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petstore-v2
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: petstore
+    version: v2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petstore-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petstore
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: petstore
+        version: v1
+    spec:
+      containers:
+      - image: swaggerapi/petstore
+        imagePullPolicy: Always
+        name: petstore
+        ports:
+        - containerPort: 8080
+          name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petstore-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petstore
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: petstore
+        version: v2
+    spec:
+      containers:
+      - image: swaggerapi/petstore
+        imagePullPolicy: Always
+        name: petstore
+        ports:
+        - containerPort: 8080
+          name: http
+---
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: APIDoc
+metadata:
+  name: petstore-openapi-v1-pets
+  namespace: default
+spec:
+  openApi:
+    content:
+      fetchUrl: https://raw.githubusercontent.com/solo-io/gitops-library/main/petstore/base/openapi-specs/petstore-openapi-v1-pets.json
+---
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: APIDoc
+metadata:
+  name: petstore-openapi-v1-users
+  namespace: default
+spec:
+  openApi:
+    content:
+      fetchUrl: https://raw.githubusercontent.com/solo-io/gitops-library/main/petstore/base/openapi-specs/petstore-openapi-v1-users.json
+---
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: APIDoc
+metadata:
+  name: petstore-openapi-v2-full
+  namespace: default
+spec:
+  openApi:
+    content:
+      fetchUrl: https://raw.githubusercontent.com/solo-io/gitops-library/main/petstore/base/openapi-specs/petstore-openapi-v2-full.json
+---
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: APIProduct
+metadata:
+  labels:
+    app: petstore
+  name: petstore-product
+  namespace: default
+spec:
+  displayInfo:
+    description: Fabulous API product for the Petstore
+    title: Petstore Product
+  versions:
+  - apis:
+    - apiDoc:
+        name: petstore-openapi-v1-pets
+        namespace: default
+    - apiDoc:
+        name: petstore-openapi-v1-users
+        namespace: default
+    gatewayConfig:
+      route:
+        inlineRoute:
+          backends:
+          - upstream:
+              name: default-petstore-v1-8080
+              namespace: gloo-system
+    name: v1
+  - apis:
+    - apiDoc:
+        name: petstore-openapi-v2-full
+        namespace: default
+    gatewayConfig:
+      route:
+        inlineRoute:
+          backends:
+          - upstream:
+              name: default-petstore-v2-8080
+              namespace: gloo-system
+    name: v2
+---
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Environment
+metadata:
+  name: dev
+  namespace: default
+spec:
+  apiProducts:
+  - basePath: '{%version%}'
+    labels:
+    - key: app
+      operator: In
+      values:
+      - petstore
+    namespaces:
+    - '*'
+    usagePlans:
+    - basic
+    versions:
+      names:
+      - v1
+      - v2
+  basePath: /ecommerce
+  displayInfo:
+    description: This environment is meant for developers to deploy and test their
+      APIs.
+    displayName: Development
+  domains:
+  - api.yourdomain.com
+  gatewayConfig:
+    disableRoutes: false
+    tls:
+      config:
+        secretRef:
+          name: upstream-tls
+          namespace: gloo-system
+        sniDomains:
+        - '*.yourdomain.com'
+      enabled: true
+    virtualServiceLabels:
+        gateway-type: public
+  parameters:
+    usagePlans:
+      basic:
+        authPolicy:
+          apiKey: {}
+        displayName: Basic plan with API key auth
+        rateLimit:
+          requestsPerUnit: 3
+          unit: MINUTE
+---
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Group
+metadata:
+  name: developers
+  namespace: default
+spec:
+  accessLevel:
+    apis:
+    - environments:
+        namespaces:
+        - '*'
+      products:
+        labels:
+        - key: app
+          operator: Equals
+          values:
+          - petstore
+        namespaces:
+        - '*'
+      usagePlans:
+      - basic
+    portals:
+    - name: ecommerce-portal
+      namespace: default
+  displayName: ecommerce developers
+  userSelector:
+    matchLabels:
+      groups.portal.gloo.solo.io/gloo-portal.developers: "true"
+    namespaces:
+    - '*'
+---
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: Portal
+metadata:
+  name: ecommerce-portal
+  namespace: default
+spec:
+  allApisPublicViewable: false
+  banner:
+    fetchUrl: https://i.imgur.com/EXbBN1a.jpg
+  customStyling: {}
+  description: The Gloo Portal for the Petstore API and much more!
+  displayName: E-commerce Portal
+  domains:
+  - portal.yourdomain.com
+  favicon:
+    fetchUrl: https://i.imgur.com/QQwlQG3.png
+  primaryLogo:
+    fetchUrl: https://i.imgur.com/hjgPMNP.png
+  publishedEnvironments:
+  - name: dev
+    namespace: default
+  staticPages:
+  - content:
+      configMap:
+        key: faq
+        name: default-petstore-portal-faq
+        namespace: default
+    description: Frequently Asked Questions
+    displayOnHomepage: true
+    name: faq
+    navigationLinkName: FAQ
+    path: /faq
+  tls:
+    secretRef:
+      name: upstream-tls
+      namespace: gloo-system
+  gatewayConfig:
+    labels:
+      gateway-type: public
+---
+apiVersion: portal.gloo.solo.io/v1beta1
+kind: User
+metadata:
+  labels:
+    app.kubernetes.io/instance: petstore-swagger-apiproduct-1-0-2
+    groups.portal.gloo.solo.io/gloo-portal.developers: "true"
+  name: developer1
+  namespace: default
+spec:
+  accessLevel:
+    portals:
+    - name: ecommerce-portal
+      namespace: default
+  basicAuth:
+    passwordSecretKey: password
+    passwordSecretName: developer1-password
+    passwordSecretNamespace: gloo-portal
+  username: developer1
