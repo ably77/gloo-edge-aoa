@@ -7,7 +7,7 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: gloo-system-ee
+    namespace: gloo-system-private
     server: https://kubernetes.default.svc
   project: default
   source:
@@ -24,7 +24,7 @@ spec:
         licenseKey: 
           secretRef:
             name: license
-            namespace: gloo-system-ee
+            namespace: gloo-system-private
             key: license-key
     repoURL: https://storage.googleapis.com/dev-portal-helm
     targetRevision: 1.2.2
