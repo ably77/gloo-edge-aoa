@@ -1,50 +1,38 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gloo-edge-enterprise-helm-public
+  name: gloo-edge-enterprise-helm-private
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: gloo-system-public
+    namespace: gloo-system-private
     server: https://kubernetes.default.svc
   project: default
   source:
     chart: gloo-ee
     helm:
-      skipCrds: false
+      skipCrds: true
       values: |
         create_license_secret: false
         gloo:
           license_secret_name: license
           settings: 
-            writeNamespace: gloo-system-public
+            writeNamespace: gloo-system-110
             watchNamespaces:
-            - gloo-system-public
+            - gloo-system-110
             - bookinfo-v1
             - bookinfo-v2
             - httpbin
             - default
-          gatewayProxies:
-            gatewayProxy:
-              disabled: false # disable the default gateway-proxy deployment and its 2 default Gateway CRs
-              gatewaySettings:
-                customHttpGateway: # using the default HTTP Gateway
-                  virtualServiceSelector:
-                    gateway-type: public # label set on the VirtualService
-                customHttpsGateway: # using the default HTTPS Gateway
-                  virtualServiceSelector:
-                    gateway-type: public # label set on the VirtualService
-                disableHttpGateway: false # disable the default HTTP Gateway    
-                disableHttpsGateway: false # disable the default HTTPS Gateway
         gloo-fed:
           enabled: false
           create_license_secret: false
           glooFedApiserver:
             enable: false
     repoURL: http://storage.googleapis.com/gloo-ee-helm
-    targetRevision: 1.10.12
+    targetRevision: 1.10.25
   syncPolicy:
     automated:
       prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
