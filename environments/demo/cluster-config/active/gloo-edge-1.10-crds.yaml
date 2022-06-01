@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gloo-edge-crds-111
+  name: gloo-edge-crds-110
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/ably77/gloo-edge-aoa/
     targetRevision: aptt
-    path: environments/demo/infra/overlay/crds/1.11/
+    path: environments/demo/infra/overlay/crds/1.10/
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:
