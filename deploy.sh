@@ -63,12 +63,12 @@ type: Opaque
 EOF
 
 ## install argocd 
-cd bootstrap-argocd
-./install-argocd.sh insecure-rootpath
-cd ..
+#cd bootstrap-argocd
+#./install-argocd.sh insecure-rootpath
+#cd ..
 
 # wait for argo cluster rollout
-./tools/wait-for-rollout.sh deployment argocd-server argocd 10
+#./tools/wait-for-rollout.sh deployment argocd-server argocd 10
 
 # deploy edge demo
 kubectl apply -f platform-owners/demo/demo-cluster-config.yaml 
