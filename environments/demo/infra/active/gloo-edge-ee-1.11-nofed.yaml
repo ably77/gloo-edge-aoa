@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gloo-edge-enterprise-helm-public
+  name: gloo-edge-enterprise-helm-111
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: gloo-system-public
+    namespace: gloo-system-111
     server: https://kubernetes.default.svc
   project: default
   source:
