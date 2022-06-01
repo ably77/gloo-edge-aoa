@@ -31,8 +31,8 @@ else
 fi
 
 # license stuff
-kubectl create ns gloo-system-private
-kubectl create ns gloo-system-public
+kubectl create ns gloo-system-110
+kubectl create ns gloo-system-111
 
 kubectl apply -f - <<EOF
 apiVersion: v1
@@ -44,7 +44,7 @@ metadata:
     app: gloo
     gloo: license
   name: license
-  namespace: gloo-system-private
+  namespace: gloo-system-110
 type: Opaque
 EOF
 
@@ -58,7 +58,7 @@ metadata:
     app: gloo
     gloo: license
   name: license
-  namespace: gloo-system-public
+  namespace: gloo-system-111
 type: Opaque
 EOF
 
@@ -74,13 +74,14 @@ cd ..
 kubectl apply -f platform-owners/demo/demo-cluster-config.yaml 
 #kubectl apply -f platform-owners/demo/demo-apps.yaml 
 kubectl apply -f platform-owners/demo/demo-infra.yaml 
-kubectl apply -f platform-owners/demo/demo-edge-config.yaml 
+#kubectl apply -f platform-owners/demo/demo-edge-config.yaml 
 
 # wait for gloo edge deployment
-./tools/wait-for-rollout.sh deployment gateway gloo-system-private 10
+./tools/wait-for-rollout.sh deployment gateway gloo-system-110 10
+./tools/wait-for-rollout.sh deployment gateway gloo-system-111 10
 # wait for gloo portal deployment
-./tools/wait-for-rollout.sh deployment gloo-portal-controller gloo-system-private 5
-./tools/wait-for-rollout.sh deployment gloo-portal-admin-server gloo-system-private 5
+#./tools/wait-for-rollout.sh deployment gloo-portal-controller gloo-system-private 5
+#./tools/wait-for-rollout.sh deployment gloo-portal-admin-server gloo-system-private 5
 # wait for bookinfo deployment
 #./tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v1 10
 #./tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v2 10
