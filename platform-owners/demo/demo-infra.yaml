@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/ably77/gloo-edge-aoa/
-    targetRevision: appt
+    targetRevision: aptt
     path: environments/demo/infra/active/
   destination:
     server: https://kubernetes.default.svc
