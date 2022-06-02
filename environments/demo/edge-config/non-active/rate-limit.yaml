@@ -47,7 +47,7 @@ spec:
     - matchers:
       - prefix: /foo
       options:
-        prefixRewrite: '/get'
+        prefixRewrite: '/post'
         rateLimitConfigs:
           refs:
           - name: route-limit-foo
@@ -67,8 +67,10 @@ spec:
               #body:
               #  text: '{% if header(":status") == "429" %}529 - rate limited{% else %}{{ header(":status") }}{% endif %}'
               body:
-                text: '{% if header(":status") == "429" %}529 - rate limited{% else %}{{ body() }}{% endif %}'
+                #text: '{% if header(":status") == "429" %}529 - rate limited{% else %}{{ body() }}{% endif %}'
+                text: '{{ body() }}'
               parseBodyBehavior: ParseAsJson
+              #parseBodyBehavior: DontParse
       routeAction:
         single:
           upstream:
