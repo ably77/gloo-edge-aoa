@@ -47,7 +47,7 @@ spec:
           enabled: false
           create_license_secret: false
           rbac:
-            create: true
+            create: false
           glooFedApiserver:
             enable: true
     repoURL: http://storage.googleapis.com/gloo-ee-helm
