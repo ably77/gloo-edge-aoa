@@ -16,11 +16,11 @@ spec:
       skipCrds: false
       values: |
         create_license_secret: false
-        global:
-          glooRbac:
-            create: true
-            nameSuffix: public
-            namespaced: true
+        #global:
+        #  glooRbac:
+        #    create: true
+        #    nameSuffix: public
+        #    namespaced: true
         gloo:
           license_secret_name: license
           settings: 

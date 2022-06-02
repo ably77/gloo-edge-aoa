@@ -16,11 +16,11 @@ spec:
       skipCrds: false
       values: |
         create_license_secret: false
-        global:
-          glooRbac:
-            create: true
-            nameSuffix: private
-            namespaced: true
+        #global:
+        #  glooRbac:
+        #    create: true
+        #    nameSuffix: private
+        #    namespaced: true
         gloo:
           license_secret_name: license
           settings: 
@@ -47,7 +47,7 @@ spec:
           enabled: false
           create_license_secret: false
           rbac:
-            create: true
+            create: false
           glooFedApiserver:
             enable: true
     repoURL: http://storage.googleapis.com/gloo-ee-helm
