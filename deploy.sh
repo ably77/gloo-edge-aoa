@@ -74,7 +74,7 @@ cd ..
 kubectl apply -f platform-owners/demo/demo-cluster-config.yaml 
 #kubectl apply -f platform-owners/demo/demo-apps.yaml 
 kubectl apply -f platform-owners/demo/demo-infra.yaml 
-kubectl apply -f platform-owners/demo/demo-edge-config.yaml 
+#kubectl apply -f platform-owners/demo/demo-edge-config.yaml 
 
 # wait for gloo edge deployment
 ./tools/wait-for-rollout.sh deployment gateway gloo-system-private 10

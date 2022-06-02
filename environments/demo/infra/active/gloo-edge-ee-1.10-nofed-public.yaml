@@ -42,7 +42,7 @@ spec:
           enabled: false
           create_license_secret: false
           glooFedApiserver:
-            enable: false
+            enable: true
     repoURL: http://storage.googleapis.com/gloo-ee-helm
     targetRevision: 1.10.12
   syncPolicy:
