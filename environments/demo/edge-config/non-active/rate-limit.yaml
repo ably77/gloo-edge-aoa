@@ -66,9 +66,9 @@ spec:
                   text: '{% if header(":status") == "405" %}201{% else if header(":status") == "429" %}529{% else %}{{ header(":status") }}{% endif %}'    
               #body:
               #  text: '{% if header(":status") == "429" %}529 - rate limited{% else %}{{ header(":status") }}{% endif %}'
-              body:
-                #text: '{% if header(":status") == "429" %}529 - rate limited{% else %}{{ body() }}{% endif %}'
-                text: '{{ body() }}'
+              #  text: '{% if header(":status") == "429" %}529 - rate limited{% else %}{{ body() }}{% endif %}'
+              #  text: '{{ body() }}'
+              passthrough: {}
               parseBodyBehavior: ParseAsJson
               #parseBodyBehavior: DontParse
       routeAction:
