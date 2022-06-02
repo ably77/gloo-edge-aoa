@@ -79,8 +79,8 @@ kubectl apply -f platform-owners/demo/demo-infra.yaml
 # wait for gloo edge deployment
 ./tools/wait-for-rollout.sh deployment gateway gloo-system-private 10
 # wait for gloo portal deployment
-./tools/wait-for-rollout.sh deployment gloo-portal-controller gloo-system-private 5
-./tools/wait-for-rollout.sh deployment gloo-portal-admin-server gloo-system-private 5
+#./tools/wait-for-rollout.sh deployment gloo-portal-controller gloo-system-private 5
+#./tools/wait-for-rollout.sh deployment gloo-portal-admin-server gloo-system-private 5
 # wait for bookinfo deployment
 #./tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v1 10
 #./tools/wait-for-rollout.sh deployment productpage-v1 bookinfo-v2 10
