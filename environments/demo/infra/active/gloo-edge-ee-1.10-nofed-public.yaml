@@ -49,7 +49,7 @@ spec:
           rbac:
             create: false
           glooFedApiserver:
-            enable: true
+            enable: false
     repoURL: http://storage.googleapis.com/gloo-ee-helm
     targetRevision: 1.10.12
   syncPolicy:
