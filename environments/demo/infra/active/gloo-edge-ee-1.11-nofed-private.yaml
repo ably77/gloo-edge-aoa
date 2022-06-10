@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gloo-edge-enterprise-helm-public
+  name: gloo-edge-enterprise-helm-private
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: gloo-system-public
+    namespace: gloo-system-private
     server: https://kubernetes.default.svc
   project: default
   source:
@@ -19,14 +19,14 @@ spec:
         #global:
         #  glooRbac:
         #    create: true
-        #    nameSuffix: public
+        #    nameSuffix: private
         #    namespaced: true
         gloo:
           license_secret_name: license
           settings: 
-            writeNamespace: gloo-system-public
+            writeNamespace: gloo-system-private
             watchNamespaces:
-            - gloo-system-public
+            - gloo-system-private
             - bookinfo-v1
             - bookinfo-v2
             - httpbin
@@ -37,10 +37,10 @@ spec:
               gatewaySettings:
                 customHttpGateway: # using the default HTTP Gateway
                   virtualServiceSelector:
-                    gateway-type: public # label set on the VirtualService
+                    gateway-type: private # label set on the VirtualService
                 customHttpsGateway: # using the default HTTPS Gateway
                   virtualServiceSelector:
-                    gateway-type: public # label set on the VirtualService
+                    gateway-type: private # label set on the VirtualService
                 disableHttpGateway: false # disable the default HTTP Gateway    
                 disableHttpsGateway: false # disable the default HTTPS Gateway
         gloo-fed:
@@ -49,9 +49,9 @@ spec:
           rbac:
             create: false
           glooFedApiserver:
-            enable: false
+            enable: true
     repoURL: http://storage.googleapis.com/gloo-ee-helm
-    targetRevision: 1.10.12
+    targetRevision: 1.11.9
   syncPolicy:
     automated:
       prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
