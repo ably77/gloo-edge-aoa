@@ -50,6 +50,11 @@ spec:
             create: false
           glooFedApiserver:
             enable: true
+        # set extauth requestTimeout to 1s for okta OIDC workflow
+        global:
+          extensions:
+            extAuth:
+              requestTimeout: 5s
     repoURL: http://storage.googleapis.com/gloo-ee-helm
     targetRevision: 1.11.9
   syncPolicy:
