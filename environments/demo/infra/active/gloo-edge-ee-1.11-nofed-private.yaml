@@ -49,7 +49,7 @@ spec:
           rbac:
             create: false
           glooFedApiserver:
-            enable: true
+            enable: false
         # set extauth requestTimeout to 1s for okta OIDC workflow
         global:
           extensions:
