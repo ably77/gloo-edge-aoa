@@ -13,7 +13,7 @@ spec:
   source:
     chart: gloo-ee
     helm:
-      skipCrds: false
+      skipCrds: true
       values: |
         create_license_secret: false
         #global:
