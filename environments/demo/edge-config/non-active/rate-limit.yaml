@@ -47,7 +47,7 @@ spec:
     - matchers:
       - prefix: /foo
       options:
-        prefixRewrite: '/post'
+        prefixRewrite: '/get'
         rateLimitConfigs:
           refs:
           - name: route-limit-foo
