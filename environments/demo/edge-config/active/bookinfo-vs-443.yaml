@@ -10,7 +10,7 @@ spec:
       namespace: gloo-system
   virtualHost:
     domains:
-    - 'bookinfo-glootest.com'
+    - 'bookinfo.glootest.com'
     - 'bookinfo-local.glootest.com'
     routes:
     - matchers:
