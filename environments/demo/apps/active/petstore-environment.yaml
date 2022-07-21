@@ -34,7 +34,7 @@ spec:
           name: upstream-tls
           namespace: gloo-system
         sniDomains:
-        - '*.kapoozi.com'
+        - '*.example.com'
       enabled: true
   parameters:
     usagePlans:
