@@ -28,6 +28,7 @@ spec:
   - api.example.com
   gatewayConfig:
     disableRoutes: false
+    # uncomment to configure tls
     #tls:
     #  config:
     #    secretRef:

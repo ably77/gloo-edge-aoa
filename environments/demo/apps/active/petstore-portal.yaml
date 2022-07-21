@@ -30,6 +30,7 @@ spec:
     name: faq
     navigationLinkName: FAQ
     path: /faq
+  # uncomment to configure tls  
   #tls:
   #  secretRef:
   #    name: upstream-tls
