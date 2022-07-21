@@ -14,8 +14,8 @@ spec:
     routes:
     - matchers:
       - prefix: /argo
-      #options:
-      #  prefixRewrite: /argo
+      options:
+        prefixRewrite: /argo
       routeAction:
         single:
           upstream:
