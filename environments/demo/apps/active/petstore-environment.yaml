@@ -35,7 +35,7 @@ spec:
     #      namespace: gloo-system
     #    sniDomains:
     #    - '*.example.com'
-      enabled: true
+    #  enabled: true
   parameters:
     usagePlans:
       basic:
