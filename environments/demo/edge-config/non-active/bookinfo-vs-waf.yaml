@@ -1,0 +1,38 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo-vs
+  namespace: gloo-system
+spec:
+  sslConfig:
+    secretRef:
+      name: upstream-tls
+      namespace: gloo-system
+  virtualHost:
+    domains:
+    - 'bookinfo.glootest.com'
+    - 'bookinfo-local.glootest.com'
+    options:
+      waf:
+        customInterventionMessage: Username should only contain letters
+        ruleSets:
+        - ruleStr: |
+            # Turn rule engine on
+            SecRuleEngine On
+            SecRule ARGS:/username/ "[^a-zA-Z]" "t:none,phase:2,deny,id:6,log,msg:'allow only letters in username'"
+    routes:
+    - matchers:
+      - prefix: /
+      routeAction:
+        multi:
+          destinations:
+          - destination:
+              upstream:
+                name: bookinfo-v1-productpage-9080
+                namespace: gloo-system
+            weight: 5
+          - destination:
+              upstream:
+                name: bookinfo-v2-productpage-9080
+                namespace: gloo-system
+            weight: 5

@@ -1,0 +1,53 @@
+apiVersion: gateway.solo.io/v1
+kind: VirtualService
+metadata:
+  name: bookinfo-vs
+  namespace: gloo-system
+spec:
+  sslConfig:
+    secretRef:
+      name: upstream-tls
+      namespace: gloo-system
+  virtualHost:
+    domains:
+    - 'bookinfo.glootest.com'
+    - 'bookinfo-local.glootest.com'
+    options:
+      rateLimitConfigs:
+        refs:
+        - name: global-limit
+          namespace: gloo-system
+    routes:
+    - matchers:
+      - prefix: /
+      routeAction:
+        multi:
+          destinations:
+          - destination:
+              upstream:
+                name: bookinfo-v1-productpage-9080
+                namespace: gloo-system
+            weight: 5
+          - destination:
+              upstream:
+                name: bookinfo-v2-productpage-9080
+                namespace: gloo-system
+            weight: 5
+---
+apiVersion: ratelimit.solo.io/v1alpha1
+kind: RateLimitConfig
+metadata:
+  name: global-limit
+  namespace: gloo-system
+spec:
+  raw:
+    descriptors:
+    - key: generic_key
+      rateLimit:
+        requestsPerUnit: 10
+        unit: MINUTE
+      value: count
+    rateLimits:
+    - actions:
+      - genericKey:
+          descriptorValue: count
