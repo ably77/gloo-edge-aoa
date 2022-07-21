@@ -10,7 +10,8 @@ spec:
       namespace: gloo-system
   virtualHost:
     domains:
-    - argocd.example.com
+    - argocd.glootest.com
+    - argocd-local.glootest.com
     routes:
     - matchers:
       - prefix: /argo
