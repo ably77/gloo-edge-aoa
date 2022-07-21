@@ -28,13 +28,13 @@ spec:
   - api.example.com
   gatewayConfig:
     disableRoutes: false
-    tls:
-      config:
-        secretRef:
-          name: upstream-tls
-          namespace: gloo-system
-        sniDomains:
-        - '*.example.com'
+    #tls:
+    #  config:
+    #    secretRef:
+    #      name: upstream-tls
+    #      namespace: gloo-system
+    #    sniDomains:
+    #    - '*.example.com'
       enabled: true
   parameters:
     usagePlans:
