@@ -1,7 +1,7 @@
 apiVersion: enterprise.gloo.solo.io/v1
 kind: AuthConfig
 metadata:
-  name: bookinfo-okta-oidc
+  name: okta-oauth
   namespace: gloo-system
 spec:
   configs:
