@@ -4,22 +4,21 @@ metadata:
   name: argo-vs
   namespace: gloo-system
 spec:
-  #sslConfig:
-  #  secretRef:
-  #    name: upstream-tls
-  #    namespace: gloo-system
+  sslConfig:
+    secretRef:
+      name: upstream-tls
+      namespace: gloo-system
   virtualHost:
     domains:
-    #- 'argocd.glootest.com'
-    #- 'argocd-local.glootest.com'
-    - '*'
+    - 'argocd.glootest.com'
+    - 'argocd-local.glootest.com'
     routes:
     - matchers:
       - prefix: /argo
-      #options:
-      #  prefixRewrite: /argo
+      options:
+        prefixRewrite: /argo
       routeAction:
         single:
           upstream:
-            name: argocd-argocd-server-80
+            name: argocd-argocd-server-443
             namespace: gloo-system
