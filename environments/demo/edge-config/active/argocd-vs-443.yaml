@@ -14,6 +14,10 @@ spec:
     #- 'argocd-local.glootest.com'
     - '*'
     routes:
+    - matchers:
+      - prefix: /
+      options:
+        prefixRewrite: /argo
       routeAction:
         single:
           upstream:
