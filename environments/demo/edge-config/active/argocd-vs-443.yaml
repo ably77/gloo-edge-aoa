@@ -15,7 +15,7 @@ spec:
     - '*'
     routes:
     - matchers:
-      - prefix: /
+      - prefix: /argo
       #options:
       #  prefixRewrite: /argo
       routeAction:
